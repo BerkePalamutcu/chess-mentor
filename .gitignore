@@ -1,0 +1,9 @@
+backend/.env
+backend/.env.example
+/.idea
+/backend/.idea
+/backend/.venv
+/backend/chess_mentor.db
+/frontend/.claude
+.claude
+.playwright-mcp
