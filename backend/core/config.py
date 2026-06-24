@@ -1,7 +1,13 @@
+import os
 import secrets
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+def _default_workers() -> int:
+    """One uvicorn worker per CPU core (min 1) — overridable via the WORKERS env var."""
+    return max(1, os.cpu_count() or 1)
 
 
 class Settings(BaseSettings):
@@ -27,6 +33,12 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///./chess_mentor.db"
     # Comma-separated list of allowed frontend origins for CORS.
     frontend_origins: str = "http://localhost:5173,http://localhost:5174"
+
+    # Server (used when running `python main.py`)
+    host: str = "127.0.0.1"
+    port: int = 8123
+    # Number of worker processes; defaults to one per CPU core.
+    workers: int = Field(default_factory=_default_workers)
 
 
 settings = Settings()
